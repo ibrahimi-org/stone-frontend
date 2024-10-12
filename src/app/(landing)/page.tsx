@@ -2,13 +2,6 @@
 import ThemeToggler from "@/components/molecules/ThemeToggler";
 import { Button } from "@/components/ui/button";
 
-import { isAuthenticated, LogOutAPI } from "@/lib/http/auth";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import { useTranslation } from "react-i18next";
-
-import { useGlobal } from "@/contexts/GlobalLayout";
-
 const colors = [
   "primary",
   "secondary",
@@ -27,33 +20,15 @@ const buttonVariants = {
 };
 
 export default function Home() {
-  //const { t } = useTranslation("error-codes");
-  const { t } = useTranslation();
-  const router = useRouter();
-  // useEffect(() => {
-  //   if (!isAuthenticated()) router.replace("/auth/sign-in");
-  // }, [router]);
-
   const logOut = () => {
     // LogOutAPI()
     //   .then((res: any) => router.replace("/auth/sign-in"))
     //   .catch((err: any) => alert(err));
   };
 
-  const { showAlert, alertData } = useGlobal();
-
-  // const showMyAlert = () => {
-  //   showAlert({
-  //     title: "MY Alert test",
-  //     body: "This is a test alert",
-  //     type: AlertType.Success,
-  //   });
-  // };
-
   return (
     <main className="container">
       <div className="py-8">
-        <h1 className="text-center text-3xl bg-brand">{t("test")}</h1>
         <div className="w-full flex justify-end space-x-5">
           {/* <h1>user name: {Parse.User.current()?.get('fullName')}</h1> */}
           <ThemeToggler />
