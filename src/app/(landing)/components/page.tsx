@@ -1,3 +1,4 @@
+"use client";
 import MySelect from "@/components/molecules/select/MySelect";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,6 +8,8 @@ import { startCase } from "lodash-es";
 import React from "react";
 import { CgMoon, CgSun } from "react-icons/cg";
 import { SelectOptions } from "../../../../public/data/select-data";
+import { LanguageSwitcher } from "@/components/languageSwitcher";
+import { useTranslation } from "react-i18next";
 
 interface Com {
   Component: React.ComponentType;
@@ -89,11 +92,12 @@ const components: Coms = {
   },
 };
 
-export default async function Components() {
-  const t = await initI18n("en", ["second-page", "translation"]);
+export default function Components(req: any) {
+  const { t } = useTranslation("second-page");
   return (
     <main className="container mx-auto">
-      <h1>App name {t("back-to-home")}</h1>
+      <h1>App name {t("appName")}</h1>
+      <LanguageSwitcher />
       <Tabs defaultValue={"Button"}>
         <TabsList>
           {Object.entries(components).map(([key, obj], index) => (

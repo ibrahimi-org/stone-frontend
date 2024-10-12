@@ -1,12 +1,11 @@
 "use client";
 
-import MyInput from "@/components/atoms/MyInput";
 import { Form } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import locales from "@/locales/en/error-codes.json";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { setCookie } from "cookies-next";
-import _ from "lodash-es";
+import * as _ from "lodash-es";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -30,6 +29,25 @@ export default function SignInPage() {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     router.replace("/");
+
+    try {
+      fetch("http://localhost:3000/api/auth/sign-in", {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "post",
+        body: JSON.stringify(values),
+      }).then(async (re) => {
+        const data = await re.json();
+        const { user, sessionToken } = data;
+        setCookie("session-token", sessionToken);
+        console.log("LOggedldsjkf ", data);
+        alert(`Logged in as ${user.get("username")}`);
+      });
+    } catch (error) {
+      console.error("Error while logging in:", error);
+    }
+
     // const res = fetch("http://localhost:3000/api/auth/sign-in", {
     //   headers: {
     //     "Content-Type": "application/json",

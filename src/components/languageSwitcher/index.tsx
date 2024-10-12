@@ -1,14 +1,24 @@
-import Link from "next/link";
-import { Trans } from "react-i18next/TransWithoutContext";
-import { useTranslation } from "@/configs/i18next";
-import { languages } from "@/configs/i18next/settings";
-import { LanguageSwitcherBase } from "./languageSwitcherBase";
+"use client";
 
-export const LanguageSwitcher = async ({ lng }: { lng: string }) => {
-  const { t } = await useTranslation(lng, "languageSwitcher");
+import MySelect from "../molecules/select/MySelect";
+import { useTranslation } from "react-i18next";
+import { setCookie } from "cookies-next";
+import { I18N } from "@/configs/i18next/settings";
+
+export const LanguageSwitcher = () => {
+  const { t, i18n } = useTranslation("translation");
+
+  const handleLanguageChange = (langValue: string) => {
+    i18n.changeLanguage(langValue);
+    setCookie(I18N.cookieName, langValue);
+  };
+
   return (
-    <LanguageSwitcherBase
-    //t100={t} lng={lng}
+    <MySelect
+      onChange={handleLanguageChange}
+      options={I18N.supportedLngs}
+      renderItem={(o) => o}
+      getItemValue={(o) => o}
     />
   );
 };

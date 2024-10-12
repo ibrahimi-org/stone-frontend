@@ -37,14 +37,14 @@ export default function SignUpPage() {
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    // console.log(values);
-    // SignUpAPI(values)
-    //   .then((res) => {
-    //     alert("Success!");
-    //   })
-    //   .catch((err) => {
-    //     alert(t(err.code));
-    //   });
+    console.log(values);
+    SignUpAPI(values)
+      .then((res) => {
+        alert("Success!");
+      })
+      .catch((err) => {
+        alert(t(err.code));
+      });
   }
 
   return (

@@ -18,6 +18,8 @@ const Switch = React.forwardRef<
   React.ElementRef<typeof SwitchPrimitives.Root>,
   React.ComponentPropsWithoutRef<typeof SwitchPrimitives.Root> & {
     size?: "sm" | "md";
+    value?: any;
+    onChange?: (e: any) => void;
   }
 >(({ className, size = "sm", ...props }, ref) => {
   const { container } = sizeClasses[size];
@@ -33,6 +35,8 @@ const Switch = React.forwardRef<
         className
       )}
       {...props}
+      checked={props.checked ?? props.value}
+      onCheckedChange={props.onCheckedChange ?? props.onChange}
       ref={ref}
     >
       <SwitchPrimitives.Thumb

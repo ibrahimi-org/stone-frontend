@@ -1,28 +1,38 @@
 "use client";
 
-import { AlertType } from "@/components/molecules/AlertWrapper";
+import { Field } from "@/components/atoms/Field";
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useGlobal } from "@/contexts/GlobalLayout";
+import { useToast } from "@/hooks/use-toast";
 import {
   DialogBase as Modal,
   PromptDialog as Prompt,
   TagDialog,
 } from "@/lib/types/dialogs";
 import { useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
 
 export default function Dashboard() {
   const [countState, setCountState] = useState<number>(1);
 
-  const { showAlert, showDialog, closeDialog, dialogs, showLoading } =
-    useGlobal();
+  const { showDialog, closeDialog, dialogs, showLoading } = useGlobal();
+
+  const methods = useForm();
+
+  function onSubmit(values: any) {
+    console.log("mm 100 - - - ", values);
+  }
+
+  const { toast } = useToast();
 
   const showMyAlert = () => {
-    setCountState(countState + 1);
-    showAlert({
-      key: Math.random().toString(36),
+    // setCountState(countState + 1);
+    toast({
       title: `----------         hiii  ${countState}     ----------- `,
-      body: "    ",
-      type: AlertType.Success,
+      variant: "error",
+      position: "bottom",
     });
   };
 
@@ -35,16 +45,42 @@ export default function Dashboard() {
     const dialog = new Modal((key) => closeDialog(key), {
       header: {
         title: "first title",
-        desc: "sdfj lkasdjf;lk asd;lfkj asdlkf j",
+        desc: "I am description of this Diaolg ... !",
       },
       content: (
-        <>
-          <p>this is content</p>
-        </>
+        <FormProvider {...methods}>
+          <form onSubmit={methods.handleSubmit(onSubmit)}>
+            <Field
+              name="radioGroup"
+              renderInput={(field) => (
+                <RadioGroup {...field}>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="indeterminate" id="r1" />
+                    <Label htmlFor="r1">indeterminate</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value={"true"} id="r2" />
+                    <Label htmlFor="r2">True</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value={"false"} id="r3" />
+                    <Label htmlFor="r3">False</Label>
+                  </div>
+                </RadioGroup>
+              )}
+            />
+
+            <Button type="submit">submit</Button>
+          </form>
+        </FormProvider>
       ),
       footer: (
         <div className="flex ">
-          <Button onClick={() => onClickHooray()}>new dialog</Button>
+          <FormProvider {...methods}>
+            <form onSubmit={methods.handleSubmit(onSubmit)}>
+              <Button type="submit">Submit</Button>
+            </form>
+          </FormProvider>
           <Button onClick={() => openPromptDialog()}>Input Value</Button>
           <Button onClick={() => openTagDialog()}>Logout</Button>
           <Button
@@ -56,7 +92,6 @@ export default function Dashboard() {
           >
             Close me
           </Button>
-          {/* <Button onClick={() => onclose()}>close</Button> */}
         </div>
       ),
     });
@@ -68,9 +103,6 @@ export default function Dashboard() {
     closeDialog(key);
   };
 
-  const onClickHooray = () => {
-    // showDialog(new PromptDialog("OK", { type: "text", maxLength: 5 }, onClick));
-  };
   const openPromptDialog = () => {
     showDialog(
       new Prompt((key) => closeDialog(key), "OK", console.log, {

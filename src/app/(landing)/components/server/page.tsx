@@ -16,27 +16,9 @@ import MultipleSelector, {
   Option,
 } from "@/components/molecules/select/MultiSelect";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Switch } from "@/components/ui/switch";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
-import { RadioGroup } from "@/components/ui/radio-group";
 
 export default function ServerPage() {
   const form = useForm({
@@ -95,12 +77,12 @@ export default function ServerPage() {
             Input={MySelect}
             InputProps={{ options, placeholder: "Select One" }}
           />
-          <Field<"select">
+          <Field
             name={"checbox"}
             Input={Checkbox}
             InputProps={{ title: "My Checkbox" }}
           />
-          <Field<"select"> name={"select"} Input={Select} />
+          {/* <Field name={"select"} Input={Select} /> */}
 
           <Field
             name="multiSelect"
@@ -109,6 +91,28 @@ export default function ServerPage() {
               options: OPTIONS,
               onChangeValue: (o: any) => o.label + " " + o.value,
             }}
+          />
+
+          <Field name="switch" Input={Switch} />
+
+          <Field
+            name="radioGroup"
+            renderInput={(field) => (
+              <RadioGroup {...field}>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="indeterminate" id="r1" />
+                  <Label htmlFor="r1">indeterminate</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value={"true"} id="r2" />
+                  <Label htmlFor="r2">True</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value={"false"} id="r3" />
+                  <Label htmlFor="r3">False</Label>
+                </div>
+              </RadioGroup>
+            )}
           />
 
           <Input
