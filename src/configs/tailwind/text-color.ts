@@ -22,7 +22,7 @@ const TextColor: ResolvableTo<RecursiveKeyValuePair> = {
     DEFAULT: "hsl(var(--text-quaternary))",
     "on-brand": "hsl(var(--text-quaternary_on-brand))",
   },
-  white: "var(--text-white)",
+  white: "hsl(var(--text-white))",
   disabled: "hsl(var(--text-disabled))",
   placeholder: {
     DEFAULT: "hsl(var(--text-placeholder))",

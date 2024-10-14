@@ -8,7 +8,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import ISlider from "@/app/models/Slide";
+import ISlider from "@/lib/models/Slide";
 import Image from "next/image";
 
 interface IProps {

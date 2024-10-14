@@ -2,7 +2,7 @@
 import ParseBrowser from "@/configs/parse/parse-browser";
 import { useDialog } from "@/hooks/use-dialogs";
 import { useRedirectQuery } from "@/hooks/use-redirect";
-import { AppContants } from "@/lib/constants";
+import { AppConstants } from "@/lib/constants";
 import { TagDialog } from "@/lib/types/dialogs";
 import { ExitIcon } from "@radix-ui/react-icons";
 import { deleteCookie } from "cookies-next";
@@ -18,7 +18,7 @@ const LogOutButton = () => {
   const logOut = () => {
     ParseBrowser.User.logOut().then(() => {
       redirect("/auth/sign-in");
-      deleteCookie(AppContants.ParseSessionCookieName);
+      deleteCookie(AppConstants.ParseSessionCookieName);
     });
   };
 

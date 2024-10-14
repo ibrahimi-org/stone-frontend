@@ -7,7 +7,7 @@ import { startCase } from "lodash-es";
 import React from "react";
 import { CgMoon, CgSun } from "react-icons/cg";
 import { SelectOptions } from "../../../../public/data/select-data";
-import { LanguageSwitcher } from "@/components/languageSwitcher";
+import { LanguageSwitcher } from "@/components/molecules/LangSwitcher";
 import { useTranslation } from "react-i18next";
 
 interface Com {

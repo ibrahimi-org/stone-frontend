@@ -2,10 +2,7 @@
 
 import { useEffect, useState } from "react";
 import i18next from "i18next";
-import {
-  initReactI18next,
-  useTranslation as useTranslationOrg,
-} from "react-i18next";
+import { initReactI18next, useTranslation as useTranslationOrg } from "react-i18next";
 import { setCookie, getCookie } from "cookies-next";
 import resourcesToBackend from "i18next-resources-to-backend";
 import LanguageDetector from "i18next-browser-languagedetector";
@@ -20,7 +17,7 @@ i18next
   .use(
     resourcesToBackend(
       (language: string, namespace: string | string[]) =>
-        import(`./locales/${language}/${namespace}.json`)
+        import(`../../../public/locales/${language}/${namespace}.json`)
     )
   )
   .init({
@@ -32,12 +29,12 @@ i18next
     preload: runsOnServerSide ? I18N.supportedLngs : [],
   });
 
-export function useTranslation(ns: string, options: any) {
-  const lng = getCookie(I18N.cookieName);
+export function useTranslation(ns: string, lang?: string, options: any = {}) {
+  lang = lang ?? getCookie(I18N.cookieName) ?? I18N.fallbackLng;
   const ret = useTranslationOrg(ns, options);
   const { i18n } = ret;
-  if (runsOnServerSide && lng && i18n.resolvedLanguage !== lng) {
-    i18n.changeLanguage(lng);
+  if (runsOnServerSide && lang && i18n.resolvedLanguage !== lang) {
+    i18n.changeLanguage(lang);
   } else {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [activeLng, setActiveLng] = useState(i18n.resolvedLanguage);
@@ -48,14 +45,14 @@ export function useTranslation(ns: string, options: any) {
     }, [activeLng, i18n.resolvedLanguage]);
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
-      if (!lng || i18n.resolvedLanguage === lng) return;
-      i18n.changeLanguage(lng);
-    }, [lng, i18n]);
+      if (!lang || i18n.resolvedLanguage === lang) return;
+      i18n.changeLanguage(lang);
+    }, [lang, i18n]);
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
-      if (activeLng === lng) return;
-      setCookie(I18N.cookieName, lng, { path: "/" });
-    }, [lng, activeLng]);
+      if (getCookie(I18N.cookieName) === lang) return;
+      setCookie(I18N.cookieName, lang, { path: "/" });
+    }, [lang]);
   }
   return ret;
 }

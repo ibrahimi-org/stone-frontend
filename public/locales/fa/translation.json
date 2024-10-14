@@ -1,5 +1,11 @@
 {
   "appName": "استارتر اپ",
+  "menus": {
+    "about-us": "درباره ما",
+    "contact-us": "تماس با ما",
+    "services": "خدمات ما",
+    "category": "دسته بندی"
+  },
   "auth": {
     "username": "نام کاربری",
     "username_hint": "نام کاربری خود را وارد کنید",

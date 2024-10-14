@@ -29,7 +29,9 @@
     "src/app/api/auth/is-authenticated/route.js",
     ".next/types/**/*.ts",
     "src/configs/parse/parse-node.ts",
-    "src/configs/parse/parse.-serverjs"
+    "src/configs/parse/parse.-serverjs",
+    "next.config.mjs",
+    "src/configs/i18next/settings.ts"
   ],
   "exclude": ["node_modules"]
 }

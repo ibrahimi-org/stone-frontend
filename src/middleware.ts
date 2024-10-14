@@ -1,38 +1,53 @@
 import acceptLanguage from "accept-language";
 import { NextRequest, NextResponse } from "next/server";
 import { I18N } from "./configs/i18next/settings";
-import { AppContants } from "./lib/constants";
+import { AppConstants } from "./lib/constants";
 
 acceptLanguage.languages(I18N.supportedLngs);
 
+function extractLang(pathname: string) {
+  let [first, second] = pathname?.split("/");
+  first = first || second;
+  return I18N.supportedLngs.find((lng) => first === lng);
+}
+
 export async function middleware(request: NextRequest) {
-  let lng;
+  let lang;
   let sessionToken;
-  if (request.cookies.has(I18N.cookieName))
-    lng = acceptLanguage.get(request.cookies.get(I18N.cookieName)?.value);
-  if (!lng) lng = acceptLanguage.get(request.headers.get("Accept-Language"));
-  if (!lng) lng = I18N.fallbackLng;
 
-  if (request.cookies.has(AppContants.ParseSessionCookieName))
-    sessionToken = request.cookies.get(
-      AppContants.ParseSessionCookieName
-    )?.value;
+  const { pathname } = request.nextUrl;
+  console.log("------", pathname);
+  lang = extractLang(pathname);
+  const hasLocale = lang !== undefined;
 
-  const response = sessionToken
+  if (!lang && request.cookies.has(I18N.cookieName))
+    lang = acceptLanguage.get(request.cookies.get(I18N.cookieName)?.value);
+  if (!lang) lang = acceptLanguage.get(request.headers.get("Accept-Language"));
+  if (!lang) lang = I18N.fallbackLng;
+
+  if (request.cookies.has(AppConstants.ParseSessionCookieName))
+    sessionToken = request.cookies.get(AppConstants.ParseSessionCookieName)?.value;
+
+  let response = sessionToken
     ? NextResponse.next()
-    : NextResponse.redirect(new URL("/auth/sign-in", request.url));
-  response.headers.set("Accept-Language", lng);
+    : NextResponse.redirect(new URL(`${lang}/auth/sign-in`, request.url));
 
-  response.cookies.set(I18N.cookieName, lng);
+  if (!hasLocale) {
+    request.nextUrl.pathname = `/${lang}${pathname}`;
+    response = NextResponse.redirect(request.nextUrl);
+  }
+  response.headers.set("Accept-Language", lang);
+
+  response.cookies.set(I18N.cookieName, lang);
 
   if (sessionToken) {
     try {
-      response.cookies.set(AppContants.ParseSessionCookieName, sessionToken);
+      response.cookies.set(AppConstants.ParseSessionCookieName, sessionToken);
     } catch (error) {
       console.error("error", error);
     }
   } else {
-    response.cookies.delete(AppContants.ParseSessionCookieName);
+    response.cookies.delete(AppConstants.ParseSessionCookieName);
   }
   return response;
 }
@@ -40,7 +55,7 @@ export async function middleware(request: NextRequest) {
 // See "Matching Paths" below to learn more
 export const config = {
   matcher: [
-    "/((?!api|_next/static|_next/image|favicon.icosw.js|site.webmanifest|auth|test).*)",
+    "/((?!api|_next/static|_next/image|favicon.icosw.js|site.webmanifest|favicon.ico|next.svg).*)",
     "/dashboard/:path*",
   ],
 };

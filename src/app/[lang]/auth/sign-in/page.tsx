@@ -13,7 +13,7 @@ import { setCookie } from "cookies-next";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
-import { AppContants } from "@/lib/constants";
+import { AppConstants } from "@/lib/constants";
 import { Session } from "parse";
 
 export const formSchema = z.object({
@@ -43,7 +43,7 @@ export default function SignInPage() {
         values.password
       );
       const token = user.getSessionToken();
-      setCookie(AppContants.ParseSessionCookieName, token);
+      setCookie(AppConstants.ParseSessionCookieName, token);
       redirect();
     } catch (err: any) {
       toast({ description: t(`auth.error.${err.code}`), variant: "error" });

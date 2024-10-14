@@ -1,5 +1,5 @@
 export interface INavMenu {
-  key: string;
+  name: string;
   href?: string;
   icon?: string;
   desc?: string;

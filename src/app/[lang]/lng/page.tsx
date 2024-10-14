@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { LanguageSwitcher } from "@/components/languageSwitcher";
+import { LanguageSwitcher } from "@/components/molecules/LangSwitcher";
 import { cookies } from "next/headers";
 
 export default async function Page({ params }: { params: { lng: string } }) {

@@ -3,7 +3,7 @@
 import { I18N } from "@/configs/i18next/settings";
 import { setCookie } from "cookies-next";
 import { useTranslation } from "react-i18next";
-import MySelect from "../molecules/select/MySelect";
+import MySelect from "./select/MySelect";
 
 export const LanguageSwitcher = () => {
   const { t, i18n } = useTranslation("translation");

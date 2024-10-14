@@ -1,5 +1,11 @@
 {
   "appName": "Starter App wow second",
+  "menus": {
+    "about-us": "About Us",
+    "contact-us": "Contact Us",
+    "services": "Our Services",
+    "category": "Category"
+  },
   "auth": {
     "username": "Username",
     "username_hint": "Enter your Username",
