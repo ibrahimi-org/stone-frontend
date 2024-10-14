@@ -1,6 +1,5 @@
 "use client";
 
-import MyInput from "@/components/atoms/MyInput";
 import { Form } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { SignUpAPI } from "@/lib/http/auth";
@@ -8,10 +7,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import locales from "@/locales/en/error-codes.json";
-import _ from "lodash-es";
-
-const t = (key: string): any => _.get(locales, key);
+import * as _ from "lodash-es";
+import ParseBrowser from "@/configs/parse/parse-browser";
+import { useGlobal } from "@/contexts/GlobalLayout";
+import { useTranslation } from "react-i18next";
+import { toast } from "@/hooks/use-toast";
+import { Field } from "@/components/atoms/Field";
+import { useRedirectQuery } from "@/hooks/use-redirect";
 
 export const formSchema = z.object({
   fullname: z.string(),
@@ -23,6 +25,9 @@ export const formSchema = z.object({
 });
 
 export default function SignUpPage() {
+  const { setIsLoading } = useGlobal();
+  const { t } = useTranslation("translation");
+  const [redirect] = useRedirectQuery();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -32,58 +37,62 @@ export default function SignUpPage() {
       password: "",
     },
   });
-  console.log(typeof locales);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-    SignUpAPI(values)
-      .then((res) => {
-        alert("Success!");
+    const user = new ParseBrowser.User(values);
+    setIsLoading(true);
+    user
+      .signUp()
+      .then(() => {
+        toast({ description: t("auth.signup_success"), variant: "success" });
+        redirect();
       })
-      .catch((err) => {
-        alert(t(err.code));
+      .finally(() => {
+        setIsLoading(false);
       });
   }
 
   return (
-    <div className="h-dvh flex justify-center items-center">
-      <div className="w-[50%] h-[70%] bg-slate-500 rounded-2xl flex-row justify-center p-[50px] overflow-y-auto">
+    <div className="container mx-auto flex justify-center items-center h-screen">
+      <div className=" bg-slate-500 rounded-2xl flex-row justify-center p-[50px] overflow-y-auto">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-            <MyInput
+            <Field
+              name="fullName"
               control={form.control}
-              name="fullname"
-              label="Full name"
-              formMessage={formSchema}
-              className="w-[50%] mb-3"
+              Input={Input}
+              InputProps={{
+                type: "text",
+                placeholder: t("auth.fullName_hint"),
+              }}
+              label={t("auth.fullName")}
             />
-
-            <MyInput
-              control={form.control}
+            <Field
               name="username"
-              label="Username"
-              formMessage={formSchema}
-              className="w-[50%] mb-3"
-            />
-
-            <MyInput
               control={form.control}
+              Input={Input}
+              InputProps={{
+                type: "text",
+                placeholder: t("auth.username_hint"),
+              }}
+              label={t("auth.username")}
+            />
+            <Field
               name="email"
-              label="E-mail"
-              type="email"
-              formMessage={formSchema}
-              className="w-[50%] mb-3"
-            />
-
-            <MyInput
               control={form.control}
+              Input={Input}
+              InputProps={{ type: "email", placeholder: t("auth.email_hint") }}
+              label={t("auth.email")}
+            />
+            <Field
               name="password"
-              label="Password"
-              type="password"
-              formMessage={formSchema}
-              className="w-[50%] mb-3"
+              control={form.control}
+              Input={Input}
+              InputProps={{
+                type: "password",
+                placeholder: t("auth.password_hint"),
+              }}
+              label={t("auth.password")}
             />
 
             <Input

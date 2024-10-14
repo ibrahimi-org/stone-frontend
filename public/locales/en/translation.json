@@ -1,7 +1,20 @@
 {
   "appName": "Starter App wow second",
-  "test": "Test en",
-  "title": "Hi there!",
-  "to-second-page": "To second page",
-  "to-client-page": "To client page"
+  "auth": {
+    "username": "Username",
+    "username_hint": "Enter your Username",
+    "password": "Password",
+    "password_hint": "Enter your password",
+    "email": "Email",
+    "email_hint": "Enter your email here",
+    "fullName": "Fullname",
+    "fullName_hint": "Enter your fullname here",
+    "signup_success": "Your account created successfully!",
+    "error": {
+      "101": "There is no account with the provided crendentials."
+    }
+  },
+  "yes": "Yes",
+  "no": "No",
+  "logout_permission": "Are you sure to log out?"
 }

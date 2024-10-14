@@ -64,7 +64,7 @@ const Toast = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Root>,
   React.ComponentPropsWithoutRef<typeof ToastPrimitives.Root> &
     VariantProps<typeof toastVariants>
->(({ className, variant, position, ...props }, ref) => {
+>(({ className, variant, position = "bottom", ...props }, ref) => {
   return (
     <ToastPrimitives.Root
       ref={ref}

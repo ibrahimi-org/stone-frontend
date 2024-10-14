@@ -3,7 +3,6 @@ import MySelect from "@/components/molecules/select/MySelect";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { initI18n } from "@/configs/i18next/i18n-server";
 import { startCase } from "lodash-es";
 import React from "react";
 import { CgMoon, CgSun } from "react-icons/cg";

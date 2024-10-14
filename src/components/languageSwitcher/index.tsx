@@ -1,16 +1,17 @@
 "use client";
 
-import MySelect from "../molecules/select/MySelect";
-import { useTranslation } from "react-i18next";
-import { setCookie } from "cookies-next";
 import { I18N } from "@/configs/i18next/settings";
+import { setCookie } from "cookies-next";
+import { useTranslation } from "react-i18next";
+import MySelect from "../molecules/select/MySelect";
 
 export const LanguageSwitcher = () => {
   const { t, i18n } = useTranslation("translation");
 
   const handleLanguageChange = (langValue: string) => {
     i18n.changeLanguage(langValue);
-    setCookie(I18N.cookieName, langValue);
+    setCookie(I18N.cookieName, langValue, { path: "/" });
+    window.location.reload();
   };
 
   return (

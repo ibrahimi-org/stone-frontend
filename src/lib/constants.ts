@@ -15,3 +15,7 @@ export enum Direction {
   BOTTOM_LEFT = "bottom_left",
   BOTTOM_RIGHT = "bottom_right",
 }
+
+export class AppContants {
+  public static ParseSessionCookieName = "parse_session_cookie";
+}

@@ -19,8 +19,7 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"],
-      "@/components/*": ["./src/components/*"]
+      "@/*": ["./src/*"]
     }
   },
   "include": [
@@ -28,7 +27,9 @@
     "**/*.ts",
     "**/*.tsx",
     "src/app/api/auth/is-authenticated/route.js",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "src/configs/parse/parse-node.ts",
+    "src/configs/parse/parse.-serverjs"
   ],
   "exclude": ["node_modules"]
 }
