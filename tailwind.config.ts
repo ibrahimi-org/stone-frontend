@@ -30,10 +30,14 @@ const config = {
       extra: { min: "1536px" },
     },
     container: {
-      center: true,
+      center: true, // Centers the container horizontally by applying auto margins.
       padding: {
-        "padding-mobile": "1rem",
-        "padding-desktop": "2rem",
+        DEFAULT: "1rem", // 16px for all breakpoints (default)
+        sm: "1rem", // 16px for small screens
+        md: "2rem", // 32px for medium screens
+        lg: "2rem", // 32px for large screens
+        xl: "4rem", // 64px for extra-large screens
+        "2xl": "5rem", // 80px for extra-extra-large screens
       },
     },
     extend: {
@@ -70,6 +74,11 @@ const config = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
+    },
+  },
+  variants: {
+    extend: {
+      flexDirection: ["rtl"], // Enable RTL variant for flexDirection
     },
   },
   plugins: [require("tailwindcss-animate")],

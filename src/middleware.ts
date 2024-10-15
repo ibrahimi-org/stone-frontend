@@ -13,10 +13,9 @@ function extractLang(pathname: string) {
 
 export async function middleware(request: NextRequest) {
   let lang;
-  let sessionToken;
+  let sessionToken = request.cookies.get(AppConstants.ParseSessionCookieName)?.value; // session token
 
   const { pathname } = request.nextUrl;
-  console.log("------", pathname);
   lang = extractLang(pathname);
   const hasLocale = lang !== undefined;
 
@@ -25,37 +24,34 @@ export async function middleware(request: NextRequest) {
   if (!lang) lang = acceptLanguage.get(request.headers.get("Accept-Language"));
   if (!lang) lang = I18N.fallbackLng;
 
-  if (request.cookies.has(AppConstants.ParseSessionCookieName))
-    sessionToken = request.cookies.get(AppConstants.ParseSessionCookieName)?.value;
-
-  let response = sessionToken
-    ? NextResponse.next()
-    : NextResponse.redirect(new URL(`${lang}/auth/sign-in`, request.url));
+  request.nextUrl.pathname = `/${lang}${pathname}`;
+  let response;
 
   if (!hasLocale) {
-    request.nextUrl.pathname = `/${lang}${pathname}`;
+    // if the pathname doesn't have a lang, then redirect to detected lang.
     response = NextResponse.redirect(request.nextUrl);
+    response.headers.set("Accept-Language", lang);
+    response.cookies.set(I18N.cookieName, lang, { path: "/" });
+    return response;
   }
-  response.headers.set("Accept-Language", lang);
 
-  response.cookies.set(I18N.cookieName, lang);
-
+  const isProd = process.env.NODE_ENV === "production";
   if (sessionToken) {
-    try {
-      response.cookies.set(AppConstants.ParseSessionCookieName, sessionToken);
-    } catch (error) {
-      console.error("error", error);
-    }
+    response = NextResponse.next();
+    response.cookies.set(AppConstants.ParseSessionCookieName, sessionToken, {
+      path: "/",
+      secure: isProd,
+      httpOnly: isProd,
+    });
   } else {
+    response = NextResponse.next();
     response.cookies.delete(AppConstants.ParseSessionCookieName);
   }
+
   return response;
 }
 
 // See "Matching Paths" below to learn more
 export const config = {
-  matcher: [
-    "/((?!api|_next/static|_next/image|favicon.icosw.js|site.webmanifest|favicon.ico|next.svg).*)",
-    "/dashboard/:path*",
-  ],
+  matcher: ["/((?!api|_next/static|_next/image|favicon.icosw.js|site.webmanifest|favicon.ico|next.svg).*)"],
 };

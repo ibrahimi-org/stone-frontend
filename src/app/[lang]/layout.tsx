@@ -32,7 +32,7 @@ export default function RootLayout({
       <body className={cn("min-h-screen bg-primary-solid text-fg-primary font-lato antialiased", lato.variable)}>
         <GlobalLayout>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-            <Navbar />
+            <Navbar lang={params.lang} />
             {children}
             <Toaster />
           </ThemeProvider>

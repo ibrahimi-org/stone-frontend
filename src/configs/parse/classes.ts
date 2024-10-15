@@ -8,10 +8,16 @@ export class Classes {
   public static Navigation = "Navigation";
 }
 
-export interface INavigation extends Object<Attributes> {
+export type QueryResult<T> = {
+  results: T[];
+  count?: number;
+};
+
+export type INavigation = {
   name: string;
   href?: string;
   icon?: string;
   desc?: string;
   menus?: INavigation[];
-}
+};
+export type Navigation = Object<INavigation>;

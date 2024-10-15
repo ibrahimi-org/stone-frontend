@@ -11,49 +11,61 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
+import { serverFetch } from "@/configs/fetch/fetcher-server";
 import { useTranslation } from "@/configs/i18next/i18n-server";
-import { Classes, INavigation } from "@/configs/parse/classes";
-import ParseNode from "@/configs/parse/parse-node";
+import { INavigation, QueryResult } from "@/configs/parse/classes";
 import { isEmpty } from "lodash-es";
 import Image from "next/image";
+import { Separator } from "@/components/ui/separator";
+import ThemeToggler from "../ThemeToggler";
+import { LanguageSwitcher } from "../LangSwitcher";
+import { dir } from "i18next";
 
 export async function Navbar({ lang }: any) {
   const { t } = await useTranslation("translation");
-  // const lang = i18n.resolvedLanguage;
-  const Navigation = ParseNode.Object.extend(Classes.Navigation);
-  const query = new ParseNode.Query<INavigation>(Navigation);
-  const menus = await query.equalTo("place", "navbar").find();
-  console.log("menus are", menus[0].attributes?.menus);
+  const menus = (await serverFetch("/classes/Navigation", { cache: "force-cache", next: { revalidate: 3600 } }).then(
+    (res) => res.json()
+  )) as QueryResult<INavigation>;
+  console.log("-------", menus);
+
   return (
     <header className="container mx-auto flex justify-between mt-12 px-5 py-2 rounded-lg bg-accent-50/85 border-2 border-brand  drop-shadow-sm ">
-      <Link href={"/"} hrefLang={lang}>
-        <picture>
-          <Image src="next.svg" alt={"app name"} width={200} height={200} />
-        </picture>
-      </Link>
-      <NavigationMenu className=" ">
-        <ul className="flex gap-x-4">
-          {menus.map((menu, index) => (
-            <NavigationMenuItem key={menu.attributes.name}>
-              {menu.attributes.href && !["#", "/#"].includes(menu.attributes.href) ? (
-                <NavigationMenuLink href={`/${lang}/${menu.attributes.href}`} className={navigationMenuTriggerStyle()}>
-                  {t(`menus.${menu.attributes.name}`)}
-                </NavigationMenuLink>
-              ) : (
-                <>
-                  <NavigationMenuTrigger>{t(`menus.${menu.attributes.name}`)}</NavigationMenuTrigger>
-                  {!isEmpty(menu.get("menus")) ? (
-                    <NavigationMenuContent>
-                      Some data will come.
-                      {/* <NavigationContent menus={menu.get("menus")} /> */}
-                    </NavigationMenuContent>
-                  ) : null}
-                </>
-              )}
-            </NavigationMenuItem>
-          ))}
-        </ul>
-      </NavigationMenu>
+      <div className="flex items-center">
+        <Link href={"/"} hrefLang={lang}>
+          <picture>
+            <Image src="next.svg" alt={"app name"} width={200} height={200} />
+          </picture>
+        </Link>
+        <Separator orientation="vertical" className="mx-3" />
+        <NavigationMenu className=" " dir={dir(lang)}>
+          <ul className="flex gap-x-4">
+            {menus.results.map((menu, index) => (
+              <NavigationMenuItem key={menu.name}>
+                {menu.href && !["#", "/#"].includes(menu.href) ? (
+                  <NavigationMenuLink href={`/${lang}/${menu.href}`} className={navigationMenuTriggerStyle()}>
+                    {t(`menus.${menu.name}`)}
+                  </NavigationMenuLink>
+                ) : (
+                  <>
+                    <NavigationMenuTrigger>{t(`menus.${menu.name}`)}</NavigationMenuTrigger>
+                    {!isEmpty(menu.menus) ? (
+                      <NavigationMenuContent>
+                        Some data will come.
+                        {/* <NavigationContent menus={menu.get("menus")} /> */}
+                      </NavigationMenuContent>
+                    ) : null}
+                  </>
+                )}
+              </NavigationMenuItem>
+            ))}
+          </ul>
+        </NavigationMenu>
+      </div>
+
+      <div className="flex gap-x-5 items-center">
+        <ThemeToggler />
+        <LanguageSwitcher lang={lang} />
+      </div>
     </header>
   );
 }

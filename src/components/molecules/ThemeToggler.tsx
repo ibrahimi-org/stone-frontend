@@ -25,7 +25,7 @@ const ThemeToggler: React.FC<Props> = ({ useSwitch = true }) => {
 
   return useSwitch ? (
     <span>
-      <Button variant="primary" size="icon_md">
+      <Button variant="link" size="icon_md">
         <Icon
           onClick={() => setTheme("light")}
           color="var(--peach-5)"
@@ -59,15 +59,9 @@ const ThemeToggler: React.FC<Props> = ({ useSwitch = true }) => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
-          Light
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
-          Dark
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
-          System
-        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme("light")}>Light</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme("dark")}>Dark</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme("system")}>System</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
