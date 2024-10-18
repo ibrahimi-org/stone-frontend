@@ -16,5 +16,8 @@ export async function serverFetch(url: string | URL, options?: RequestInit) {
   if (sessionToken) {
     set(defaultOptions.headers!, "X-SESSION-TOKEN", sessionToken);
   }
-  return fetch(getBaseApiAddress(url), merge(defaultOptions, options));
+
+  const obj = merge({}, defaultOptions, options);
+
+  return fetch(getBaseApiAddress(url), obj);
 }

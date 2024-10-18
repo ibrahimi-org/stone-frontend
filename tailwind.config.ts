@@ -20,15 +20,15 @@ const config = {
     // textColor: TextColor,
     //borderColor: BorderColor,
     // backgroundColor: BackgroundColor,
-    screens: {
-      // => @media (min-width: 640px and max-width: 767px) { ... }
-      mobile: { min: "0px", max: "479px" },
-      mobileLS: { min: "480px", max: "779px" },
-      tablet: { min: "780px", max: "899px" },
-      tabletLS: { min: "900px", max: "1023px" },
-      desktop: { min: "1024px", max: "1535px" },
-      extra: { min: "1536px" },
-    },
+    // screens: {
+    //   // => @media (min-width: 640px and max-width: 767px) { ... }
+    //   xs: { max: "479px" },
+    //   sm: { max: "779px" },
+    //   md: { max: "899px" },
+    //   lg: { max: "1023px" },
+    //   xl: { max: "1535px" },
+    //   "2xl": { max: "1536px" },
+    // },
     container: {
       center: true, // Centers the container horizontally by applying auto margins.
       padding: {

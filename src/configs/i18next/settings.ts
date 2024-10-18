@@ -5,12 +5,10 @@ export class I18N {
   static fallbackLng = "fa";
   static cookieName = "i18next";
 
-  static getOptions(
-    lng = I18N.fallbackLng,
-    ns: string | string[] = I18N.fallbackNS
-  ) {
+  static getOptions(lng = I18N.fallbackLng, ns: string | string[] = I18N.fallbackNS) {
     return {
-      debug: typeof window === "undefined",
+      // debug: typeof window === "undefined",
+      debug: false,
       lng,
       ns,
       fallbackLng: I18N.fallbackLng,

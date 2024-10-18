@@ -35,19 +35,19 @@
   background: #ffffff;
 }
 /* width */
-.scroll-h-small::-webkit-scrollbar {
+.scroll-h-sm::-webkit-scrollbar {
   height: 6px;
   cursor: pointer;
 }
 
 /* Track */
-.scroll-h-small::-webkit-scrollbar-track {
+.scroll-h-sm::-webkit-scrollbar-track {
   background: hsl(var(--bg-primary));
   border-radius: 5px;
 }
 
 /* Handle */
-.scroll-h-small::-webkit-scrollbar-thumb {
+.scroll-h-sm::-webkit-scrollbar-thumb {
   background: hsl(var(--border-primary));
   border-radius: 5px;
 }

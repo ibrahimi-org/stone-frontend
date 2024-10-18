@@ -1,17 +1,15 @@
 "use client";
-import ListItem from "@/components/atoms/ListItem";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { INavMenu } from "@/lib/types/navbar";
+import { INavigation } from "@/configs/parse/classes";
 import { isEmpty } from "lodash-es";
 import Link from "next/link";
 import { useState } from "react";
 
 interface IProps {
-  menus: INavMenu[];
+  menus: INavigation[];
 }
 
 export const NavigationContent: React.FC<IProps> = ({ menus }) => {
-  console.log("-------", menus);
   const [activeTab, setActiveTab] = useState(menus[0].name);
   return (
     <Tabs
@@ -33,7 +31,7 @@ export const NavigationContent: React.FC<IProps> = ({ menus }) => {
           <Link href={menu.href ?? "#"}>{menu.name}</Link>
           <nav>
             <ul>
-              {menu?.menus?.map((subMenu: INavMenu, indx) => (
+              {menu?.menus?.map((subMenu: INavigation, indx) => (
                 <SubNavigation menu={subMenu} key={subMenu.name + indx} />
               ))}
             </ul>
@@ -45,7 +43,7 @@ export const NavigationContent: React.FC<IProps> = ({ menus }) => {
 };
 
 interface ISubMenuProps {
-  menu: INavMenu;
+  menu: INavigation;
 }
 
 const SubNavigation: React.FC<ISubMenuProps> = ({ menu }) => {

@@ -22,5 +22,7 @@
   },
   "yes": "Yes",
   "no": "No",
-  "logout_permission": "Are you sure to log out?"
+  "logout_permission": "Are you sure to log out?",
+  "special_discount": "Incredible Discount",
+  "ourDiverseServices": "Our Diverse Services"
 }

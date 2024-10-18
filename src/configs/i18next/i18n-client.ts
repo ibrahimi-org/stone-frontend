@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import i18next from "i18next";
 import { initReactI18next, useTranslation as useTranslationOrg } from "react-i18next";
 import { setCookie, getCookie } from "cookies-next";
@@ -10,7 +10,6 @@ import { I18N } from "./settings";
 
 const runsOnServerSide = typeof window === "undefined";
 
-//
 i18next
   .use(initReactI18next)
   .use(LanguageDetector)
@@ -31,6 +30,9 @@ i18next
 
 export function useTranslation(ns: string, lang?: string, options: any = {}) {
   lang = lang ?? getCookie(I18N.cookieName) ?? I18N.fallbackLng;
+
+  // init18n(lang, ns);
+  console.log("locale from cookie in loop", lang);
   const ret = useTranslationOrg(ns, options);
   const { i18n } = ret;
   if (runsOnServerSide && lang && i18n.resolvedLanguage !== lang) {

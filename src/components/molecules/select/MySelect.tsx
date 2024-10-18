@@ -23,9 +23,7 @@ interface ISelectClassName {
   item?: string;
 }
 
-interface ISelect
-  extends React.SelectHTMLAttributes<HTMLSelectElement>,
-    SelectProps {
+interface ISelect extends SelectProps {
   classes?: ISelectClassName;
   selectSize?: "sm" | "md";
   placeholder?: React.ReactNode;
@@ -40,10 +38,7 @@ interface ISelect
   getItemValue?: (item: SelectItemType | any) => string;
 }
 
-const MySelect = React.forwardRef<
-  React.ElementRef<typeof SelectPrimitive.Trigger>,
-  ISelect
->(
+const MySelect = React.forwardRef<React.ElementRef<typeof SelectPrimitive.Trigger>, ISelect>(
   (
     {
       selectLabel,
@@ -60,47 +55,34 @@ const MySelect = React.forwardRef<
       ...props
     },
     ref
-  ) => (
-    <Select
-      defaultValue={value}
-      onValueChange={onValueChange ?? onChange}
-      {...props}
-    >
-      <SelectTrigger
-        ref={ref}
-        className={cn(
-          "",
-          InputClasses.size[selectSize].default,
-          classes?.trigger
-        )}
-      >
-        {Leading ? (
-          <div className="flex space-x-3 items-center">
-            {Leading}
+  ) => {
+    const getValue = (o: any) => (getItemValue ? getItemValue(o) : o.value ?? o);
+    const render = (item: any) => (renderItem ? renderItem(item) : item.label ?? item);
+    return (
+      <Select defaultValue={value} onValueChange={onValueChange ?? onChange} {...props}>
+        <SelectTrigger ref={ref} className={cn("", InputClasses.size[selectSize].default, classes?.trigger)}>
+          {Leading ? (
+            <div className="flex space-x-3 items-center">
+              {Leading}
+              <SelectValue placeholder={placeholder} />
+            </div>
+          ) : (
             <SelectValue placeholder={placeholder} />
-          </div>
-        ) : (
-          <SelectValue placeholder={placeholder} />
-        )}
-      </SelectTrigger>
-      <SelectContent className={cn("", classes?.content)}>
-        <SelectGroup className={classes?.group}>
-          {selectLabel ? (
-            <SelectLabel className={classes?.label}>{selectLabel}</SelectLabel>
-          ) : null}
-          {options.map((item, index) => (
-            <SelectItem
-              className={classes?.item}
-              key={item.value}
-              value={getItemValue ? getItemValue(item) : item.value}
-            >
-              {renderItem ? renderItem(item) : item.label}
-            </SelectItem>
-          ))}
-        </SelectGroup>
-      </SelectContent>
-    </Select>
-  )
+          )}
+        </SelectTrigger>
+        <SelectContent className={cn("", classes?.content)}>
+          <SelectGroup className={classes?.group}>
+            {selectLabel ? <SelectLabel className={classes?.label}>{selectLabel}</SelectLabel> : null}
+            {options.map((item, index) => (
+              <SelectItem className={classes?.item} key={getValue(item) + index} value={getValue(item)}>
+                {render(item)}
+              </SelectItem>
+            ))}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+    );
+  }
 );
 
 MySelect.displayName = "MySelect";

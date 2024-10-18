@@ -23,10 +23,12 @@ import { dir } from "i18next";
 
 export async function Navbar({ lang }: any) {
   const { t } = await useTranslation("translation");
-  const menus = (await serverFetch("/classes/Navigation", { cache: "force-cache", next: { revalidate: 3600 } }).then(
-    (res) => res.json()
-  )) as QueryResult<INavigation>;
-  console.log("-------", menus);
+  let menus;
+  try {
+    menus = (await serverFetch("/classes/Navigation", { cache: "force-cache", next: { revalidate: 3600 } }).then(
+      (res) => res.json()
+    )) as QueryResult<INavigation>;
+  } catch (error) {}
 
   return (
     <header className="container mx-auto flex justify-between mt-12 px-5 py-2 rounded-lg bg-accent-50/85 border-2 border-brand  drop-shadow-sm ">
@@ -39,7 +41,7 @@ export async function Navbar({ lang }: any) {
         <Separator orientation="vertical" className="mx-3" />
         <NavigationMenu className=" " dir={dir(lang)}>
           <ul className="flex gap-x-4">
-            {menus.results.map((menu, index) => (
+            {menus?.results?.map((menu, index) => (
               <NavigationMenuItem key={menu.name}>
                 {menu.href && !["#", "/#"].includes(menu.href) ? (
                   <NavigationMenuLink href={`/${lang}/${menu.href}`} className={navigationMenuTriggerStyle()}>

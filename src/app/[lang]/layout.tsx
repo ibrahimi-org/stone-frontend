@@ -29,7 +29,7 @@ export default function RootLayout({
 }>) {
   return (
     <html suppressHydrationWarning dir={dir(params.lang)} lang={params.lang}>
-      <body className={cn("min-h-screen bg-primary-solid text-fg-primary font-lato antialiased", lato.variable)}>
+      <body className={cn("min-h-screen bg-primary text-fg-primary font-lato antialiased", lato.variable)}>
         <GlobalLayout>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
             <Navbar lang={params.lang} />
