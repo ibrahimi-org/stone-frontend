@@ -2,11 +2,11 @@ import * as React from "react";
 
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { IItem } from "@/configs/parse/classes";
 import Image from "next/image";
-import ISlider from "@/configs/parse/classes";
 
 interface IProps {
-  slides: ISlider[];
+  slides: IItem[];
 }
 
 const HomeSlider: React.FC<IProps> = ({ slides }) => {
@@ -20,13 +20,7 @@ const HomeSlider: React.FC<IProps> = ({ slides }) => {
                 {slide.sources?.map((source, ind) => (
                   <source {...source} key={ind} />
                 ))}
-                <Image
-                  className="w-full object-cover"
-                  src={slide.image}
-                  alt={slide.title ?? "Image title"}
-                  // layout="fill"
-                  fill
-                />
+                <Image className="w-full object-cover" src={slide.image!} alt={slide.title ?? "Image title"} fill />
               </picture>
               <div className="max-w-full md:max-w-80 bg-primary-hover/50 p-2 absolute z-10 left-5  top-2/3 rounded-md">
                 {slide.title && <h1 className="text-primary text-3xl">{slide.title}</h1>}

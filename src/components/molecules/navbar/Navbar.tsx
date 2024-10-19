@@ -31,11 +31,11 @@ export async function Navbar({ lang }: any) {
   } catch (error) {}
 
   return (
-    <header className="container mx-auto flex justify-between mt-12 px-5 py-2 rounded-lg bg-accent-50/85 border-2 border-brand  drop-shadow-sm ">
+    <header className="container mx-auto flex justify-between px-5 py-2 rounded-lg bg-accent-50/85 border-2 border-brand  drop-shadow-sm ">
       <div className="flex items-center">
         <Link href={"/"} hrefLang={lang}>
           <picture>
-            <Image src="next.svg" alt={"app name"} width={200} height={200} />
+            <Image src="/next.svg" alt={"app name"} width={200} height={200} />
           </picture>
         </Link>
         <Separator orientation="vertical" className="mx-3" />
@@ -44,7 +44,7 @@ export async function Navbar({ lang }: any) {
             {menus?.results?.map((menu, index) => (
               <NavigationMenuItem key={menu.name}>
                 {menu.href && !["#", "/#"].includes(menu.href) ? (
-                  <NavigationMenuLink href={`/${lang}/${menu.href}`} className={navigationMenuTriggerStyle()}>
+                  <NavigationMenuLink href={`/${lang}${menu.href}`} className={navigationMenuTriggerStyle()}>
                     {t(`menus.${menu.name}`)}
                   </NavigationMenuLink>
                 ) : (

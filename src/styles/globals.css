@@ -17,6 +17,12 @@
 ::-webkit-scrollbar {
   width: 6px;
 }
+.scroll-hidden {
+  scrollbar-width: none;
+}
+.scroll-hidden::-webkit-scrollbar {
+  display: none;
+}
 
 /* Track */
 ::-webkit-scrollbar-track {
