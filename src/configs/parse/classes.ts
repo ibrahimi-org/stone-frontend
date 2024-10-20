@@ -7,11 +7,22 @@ export class Classes {
   public static Slider = "Slider";
 }
 
-export type QueryResult<T> = {
+export type QueryResult<T = any> = {
   results: T[];
   count?: number;
 };
 
+export type IObject = {
+  objectId: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type IPointer = {
+  __type: "Pointer";
+  className: string;
+  objectId: string;
+};
 export type Batch<T = any> = {
   success: T;
   error?: {
@@ -33,7 +44,7 @@ export type IService = IItem & {
   headings: IService[];
 };
 
-export type INavigation = {
+export type INavigation = IObject & {
   name: string;
   href?: string;
   icon?: string;
@@ -49,12 +60,12 @@ export type ISource = {
 };
 export type ISlider = IItem;
 
-export type ICategory = {
+export type ICategory = IObject & {
   name: string;
   slug: string;
-  parent?: ICategory | string;
-  description?: string;
-  image?: string;
+  parent?: ICategory | IPointer;
+  desc?: string;
+  icon?: string;
 };
 
 type Price = {

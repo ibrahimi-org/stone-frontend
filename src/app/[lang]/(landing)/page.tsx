@@ -2,8 +2,7 @@ import HomeSlider from "@/components/molecules/home/HomeSlider";
 import { SpecialProduct } from "@/components/molecules/home/SpecialProducts";
 import { serverFetch } from "@/configs/fetch/fetcher-server";
 import { useTranslation } from "@/configs/i18next/i18n-server";
-import ISlider, { Batch, IProduct, QueryResult } from "@/configs/parse/classes";
-import { URLSearchParams } from "url";
+import { IItem, IProduct, QueryResult } from "@/configs/parse/classes";
 
 export default async function Home({ params: { lang } }: any) {
   const { t } = await useTranslation("translation", lang);
@@ -23,7 +22,7 @@ export default async function Home({ params: { lang } }: any) {
     //   },
     //   body: JSON.stringify({ requests: requests }),
     // }
-  ).then((r) => r.json())) as QueryResult<ISlider>;
+  ).then((r) => r.json())) as QueryResult<IItem>;
   const discountWhere = {
     "price.discount": { $exists: true },
   };
@@ -33,7 +32,7 @@ export default async function Home({ params: { lang } }: any) {
   ).then((r) => r.json())) as QueryResult<IProduct>;
   return (
     <div className=" ">
-      <HomeSlider slides={menus.results} />
+      <HomeSlider slides={menus.results!} />
       <div className="container mt-12 ">
         <SpecialProduct products={products.results} lang={lang} />
       </div>

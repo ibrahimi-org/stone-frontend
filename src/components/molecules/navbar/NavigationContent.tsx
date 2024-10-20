@@ -16,18 +16,22 @@ export const NavigationContent: React.FC<IProps> = ({ menus }) => {
       defaultValue={menus[0].name}
       value={activeTab}
       onValueChange={setActiveTab}
-      className="h-[500px] min-w-60 flex flex-col"
-      dir="rtl"
+      className="h-[500px] min-w-120 flex"
     >
-      <TabsList className="flex bg-accent-50 rounded-none ">
+      <TabsList className="w-36 flex flex-col justify-start items-start h-full bg-accent-50 rounded-none ">
         {menus.map((menu, index) => (
-          <TabsTrigger value={menu.name} key={menu.name} onMouseEnter={() => setActiveTab(menu.name)}>
+          <TabsTrigger
+            value={menu.objectId}
+            key={menu.objectId}
+            className="data-[state=active]:shadow-none data-[state=active]:drop-shadow-none rounded-none w-full text-start py-3 data-[state=active]:bg-white"
+            onMouseEnter={() => setActiveTab(menu.objectId)}
+          >
             {menu.name}
           </TabsTrigger>
         ))}
       </TabsList>
       {menus.map((menu, index) => (
-        <TabsContent value={menu.name} key={menu.name}>
+        <TabsContent value={menu.objectId} key={menu.objectId} className="p-3">
           <Link href={menu.href ?? "#"}>{menu.name}</Link>
           <nav>
             <ul>
@@ -51,7 +55,7 @@ const SubNavigation: React.FC<ISubMenuProps> = ({ menu }) => {
     <li>
       <Link
         href={menu.href ?? "#"}
-        className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+        className="block py-3 hover:text-brand-primary select-none rounded-md p-3 leading-none no-underline outline-none transition-colors "
       >
         {menu.name}
       </Link>

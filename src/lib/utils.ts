@@ -1,6 +1,10 @@
+import get from "lodash-es/get";
+import groupBy from "lodash-es/groupBy";
+import map from "lodash-es/map";
+import trimStart from "lodash-es/trimStart";
 import { type ClassValue, clsx } from "clsx";
-import { trimStart } from "lodash-es";
 import { twMerge } from "tailwind-merge";
+import trim from "lodash-es/trim";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -16,9 +20,37 @@ export function generateRandomString(length: number) {
   return result;
 }
 
-export const getBaseApiAddress = (url: string | URL) =>
+export const getBaseApiUrl = (url: string | URL): URL =>
   url instanceof URL
     ? url
     : url.indexOf("://") > 0 || url.indexOf("//") === 0
-    ? url
-    : `${process.env.NEXT_PUBLIC_PARSE_ADDRESS}/${trimStart(url, "/")}`;
+    ? new URL(url)
+    : new URL(`${process.env.NEXT_PUBLIC_PARSE_ADDRESS}/${trimStart(url, "/")}`);
+
+// Function to organize hierarchy
+export function organizeHierarchy<T = any>(
+  items: any[],
+  as: string = "items",
+  iteratee: string = "parent",
+  parentField: string = "objectId"
+): T[] {
+  // Group items by parent id
+  const groupedByParent = groupBy(items, (o) => get(o, iteratee, null));
+
+  // Recursive function to assign child items to their parents
+  const buildTree = (pId = null): T[] => {
+    //@ts-ignore
+    return map(groupedByParent[pId] || [], (item) => {
+      // Recursively find and assign children
+      item[as] = buildTree(get(item, parentField));
+      return item;
+    });
+  };
+
+  // Start with items whose parent is null (top-level items)
+  return buildTree();
+}
+
+export function joinForUrl(...urls: string[]): string {
+  return urls.map((s, i) => (i == 0 ? "/" + trim(s, "/") : trim(s, "/"))).join("/");
+}
